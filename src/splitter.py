@@ -1,6 +1,8 @@
 
 
 
+import re
+
 from src.textnode import TextNode, TextType
 
 
@@ -23,3 +25,9 @@ def split_nodes_delimiter(nodes:list[TextNode], delimiter: str, text_type: TextT
             else:
                 res.append(TextNode(text, TextType.TEXT))
     return res
+
+def extract_markdown_images(text: str) -> list[tuple[str, str]]:
+    return re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+
+def extract_markdown_links(text: str) -> list[tuple[str, str]]:
+    return re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
