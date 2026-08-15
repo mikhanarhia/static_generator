@@ -1,6 +1,7 @@
 import unittest
 
 from htmlnode import HTMLNode, LeafNode, ParentNode
+from src.textnode import TextNode, TextType, text_node_to_html_node
 
 
 
@@ -66,3 +67,8 @@ class TestHTMLNode(unittest.TestCase):
             parent_node.to_html(),
             "<div><span><b>grandchild</b></span></div>",
         )
+
+
+
+if __name__ == "__main__":
+    unittest.main()
