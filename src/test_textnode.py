@@ -1,4 +1,5 @@
 import unittest
+from src.splitter import text_to_textnodes
 from textnode import TextNode, TextType, text_node_to_html_node
 
 
@@ -41,6 +42,8 @@ class TestTextNode(unittest.TestCase):
         html_node = text_node_to_html_node(node)
         self.assertEqual(html_node.tag, "img")
         self.assertEqual(html_node.to_html(), "<img src='www.bruh.com' alt='alt textnya'></img>")
+
+
 
 if __name__ == "__main__":
     unittest.main()
