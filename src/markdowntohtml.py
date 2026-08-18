@@ -3,7 +3,7 @@
 from src.htmlnode import HTMLNode, LeafNode, ParentNode
 from src.markdownblock import BlockType, block_to_block_type, markdown_to_blocks
 from src.splitter import text_to_textnodes
-from textnode import TextNode, TextType, text_node_to_html_node
+from src.textnode import TextNode, TextType, text_node_to_html_node
 
 
 def markdown_to_html(md: str):
@@ -15,11 +15,12 @@ def markdown_to_html(md: str):
 
 
 
-def text_to_children(text: str) -> list[HTMLNode]:
+def text_to_children(text: str) -> list[LeafNode]:
     text_nodes = text_to_textnodes(text)
-    html_nodes = []
+    html_nodes: list[LeafNode] = []
     for text_node in text_nodes:
-        html_nodes.append(text_node_to_html_node(text_node))
+        leaf_node = text_node_to_html_node(text_node)
+        html_nodes.append(leaf_node)
     return html_nodes
 
 def block_to_html_node(text: str):

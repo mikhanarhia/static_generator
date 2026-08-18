@@ -26,11 +26,9 @@ class TextNode:
         return (self.text, self.text_type, self.url) == (value.text, value.text_type, value.url)
 
     def __repr__(self) -> str:
-        return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
+        return f"TextNode({self.text}, {self.text_type}, {self.url})"
 
 def text_node_to_html_node(text_node: TextNode) -> LeafNode:
-    if text_node.text_type not in TextType:
-        raise Exception("invalid TextType")
 
     match text_node.text_type:
         case TextType.TEXT:
@@ -49,3 +47,5 @@ def text_node_to_html_node(text_node: TextNode) -> LeafNode:
                     "src": text_node.url,
                     "alt": text_node.text,
                 })
+        case _:
+            raise Exception("Invalid text type")
