@@ -29,12 +29,52 @@ def block_to_html_node(text: str):
         block_leafs = text_to_children(text)
         match block_type:
             case BlockType.HEADING:
-                return ParentNode("h", block_leafs)
+                return ParentNode(heading_children(text), block_leafs)
             case BlockType.QUOTE:
+                block_leafs[0].value = quote_children(block_leafs[0].value)
                 return ParentNode("blockquote", block_leafs)
             case BlockType.ORDERED:
-                return ParentNode("ol", block_leafs)
+                return ParentNode("ol", ul_ol_block_children(block_leafs[0].value))
             case BlockType.UNORDERED:
-                return ParentNode("ul", block_leafs)
+                return ParentNode("ul", ul_ol_block_children(block_leafs[0].value))
             case BlockType.PARAGRAPH:
-                return ParentNode("p", block_leafs)
+                return ParentNode("p", par_children(block_leafs[0].value))
+    return ParentNode("pre", code_children(text) )
+
+def ul_ol_block_children(text: str) -> list[LeafNode]:
+    uls: list[str] = text.split("\n")
+    ul_list = []
+    for ul in uls:
+        ul_list.append(LeafNode("li", ul))
+    return ul_list
+
+def par_children(text: str) -> list[LeafNode]:
+    par_lines = text.replace("\n", " ")
+    return [LeafNode(None, par_lines)]
+
+def code_children(text: str) -> list[LeafNode]:
+    return [LeafNode("code", text[3:-3])]
+
+def heading_children(text: str) -> str:
+    num_hashtag = text.split(" ", 1)
+    match len(num_hashtag[0]):
+        case 1:
+            return "h1"
+        case 2:
+            return "h2"
+        case 3:
+            return "h3"
+        case 4:
+            return "h4"
+        case 5:
+            return "h5"
+        case 6:
+            return "h6"
+        case _:
+            raise Exception("# more than 6")
+
+def quote_children(text: str) -> str:
+    num_sign = text.split(" ", 1)
+    if len(num_sign[0]) > 1:
+        return text[1:]
+    return text[2:]
