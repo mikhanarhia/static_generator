@@ -34,23 +34,37 @@ def block_to_html_node(text: str):
                 block_leafs[0].value = quote_children(block_leafs[0].value)
                 return ParentNode("blockquote", block_leafs)
             case BlockType.ORDERED:
-                return ParentNode("ol", ul_ol_block_children(block_leafs[0].value))
+                return ParentNode("ol", ul_ol_block_children(text))
             case BlockType.UNORDERED:
-                return ParentNode("ul", ul_ol_block_children(block_leafs[0].value))
+                return ParentNode("ul", ul_ol_block_children(text))
             case BlockType.PARAGRAPH:
-                return ParentNode("p", par_children(block_leafs[0].value))
+                return ParentNode("p", par_children(block_leafs))
     return ParentNode("pre", code_children(text) )
 
-def ul_ol_block_children(text: str) -> list[LeafNode]:
+def ul_ol_block_children(text: str) -> list[ParentNode]:
+    block_type = block_to_block_type(text)
+    if block_type is BlockType.ORDERED:
+        rep_num = 3
+    else:
+        rep_num = 2
     uls: list[str] = text.split("\n")
-    ul_list = []
+    ul_list: list[ParentNode] = []
     for ul in uls:
-        ul_list.append(LeafNode("li", ul))
+        ul = ul[rep_num:]
+        each_line_nodes = text_to_children(ul)
+        ul = ParentNode("li", each_line_nodes)
+        ul_list.append(ul)
     return ul_list
 
-def par_children(text: str) -> list[LeafNode]:
-    par_lines = text.replace("\n", " ")
-    return [LeafNode(None, par_lines)]
+def par_children(children: list[LeafNode]) -> list[LeafNode]:
+    res: list[LeafNode] = []
+    for child in children:
+        if child.tag == None and child.value != None:
+            child.value = child.value.replace("\n", " ")
+        res.append(child)
+    return res
+    # par_lines = text.replace("\n", " ")
+    # return [LeafNode(None, par_lines)]
 
 def code_children(text: str) -> list[LeafNode]:
     return [LeafNode("code", text[3:-3])]
@@ -74,7 +88,14 @@ def heading_children(text: str) -> str:
             raise Exception("# more than 6")
 
 def quote_children(text: str) -> str:
+
     num_sign = text.split(" ", 1)
+
     if len(num_sign[0]) > 1:
-        return text[1:]
-    return text[2:]
+        rep = ">"
+    else:
+        rep = "> "
+
+    res = text.replace(rep, "")
+    res = res.replace("\n", "<br>")
+    return res
