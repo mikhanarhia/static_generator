@@ -67,7 +67,7 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
             temp = old_node.text.split(f"[{match[0]}]({match[1]})", 1)
             if temp[0] != "":
                 res.append(TextNode(temp[0], TextType.TEXT))
-            res.append(TextNode(match[0], TextType.LINK, match[1]))
+            res.append(TextNode(match[0], TextType.LINK, {"href": match[1]}))
             old_node.text = temp[1]
         if old_node.text != "":
             res.append(TextNode(old_node.text, TextType.TEXT))

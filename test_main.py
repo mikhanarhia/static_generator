@@ -72,8 +72,13 @@ class TestMain(unittest.TestCase):
         blocks = markdown_to_blocks(md)
         cek = blocks[5]
         print(cek)
-
         ul_list = ul_ol_block_children(cek)
         print(ul_list[0])
         print(ul_list[0].to_html())
-        # print(markdown_to_html(cek).to_html())
+        print(markdown_to_html(cek).to_html())
+        # cek_text = cek.split("\n")
+        # cek_text = cek_text[0]
+        # cek_text = cek_text[2:]
+        # cek_text = text_to_textnodes(cek_text)
+        # print(cek_text)
+        # print(text_node_to_html_node(cek_text[0]))

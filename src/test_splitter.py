@@ -77,10 +77,10 @@ class TestSplitter(unittest.TestCase):
         self.assertListEqual(
             [
                 TextNode("This is text with a link ", TextType.TEXT),
-                TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"),
+                TextNode("to boot dev", TextType.LINK, {"href": "https://www.boot.dev"}),
                 TextNode(" and ", TextType.TEXT),
                 TextNode(
-                    "to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev"
+                    "to youtube", TextType.LINK, {"href": "https://www.youtube.com/@bootdotdev"}
                 ),
             ],
             new_nodes,
@@ -99,7 +99,7 @@ class TestSplitter(unittest.TestCase):
             TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
             # TextNode(" and a [link](https://boot.dev)", TextType.TEXT)
             TextNode(" and a ", TextType.TEXT),
-            TextNode("link", TextType.LINK, "https://boot.dev"),
+            TextNode("link", TextType.LINK, {"href": "https://boot.dev"}),
         ]
         # print(text_to_textnodes(text))
         self.assertEqual(text_to_textnodes(text), result_list)
