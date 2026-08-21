@@ -34,7 +34,7 @@ class LeafNode(HTMLNode):
         prop_string = ""
         if self.props is not None:
             for key, value in self.props.items():
-                prop_string += f" {key}='{value}'"
+                prop_string += f' {key}="{value}'
 
         return f"<{self.tag}{prop_string}>{self.value}</{self.tag}>"
 
