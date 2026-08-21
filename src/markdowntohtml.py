@@ -29,7 +29,9 @@ def block_to_html_node(text: str):
         block_leafs = text_to_children(text)
         match block_type:
             case BlockType.HEADING:
-                return ParentNode(heading_children(text), block_leafs)
+                heading_text = text.split(" ", 1)
+                heading_leafs = text_to_children(heading_text[1])
+                return ParentNode(heading_children(text), heading_leafs)
             case BlockType.QUOTE:
                 block_leafs[0].value = quote_children(block_leafs[0].value)
                 return ParentNode("blockquote", block_leafs)
