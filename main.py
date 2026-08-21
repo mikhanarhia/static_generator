@@ -87,6 +87,9 @@ def generate_page(from_path: str, template_path: str, dest_path: str, basep = ba
     full_html = full_html.replace("{{ Content }}", html_content.to_html())
     full_html = full_html.replace('href="/', f'href="{basep}')
     full_html = full_html.replace('src="/', f'src="{basep}')
+    full_html = full_html.replace("href='/", f"href='{basep}")
+    full_html = full_html.replace("src='/", f"src='{basep}")
+
 
 
     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
