@@ -3,14 +3,18 @@
 import argparse
 import os
 import shutil
+import sys
 
 from src.markdownblock import BlockType, block_to_block_type, markdown_to_blocks
 from src.markdowntohtml import heading_children, markdown_to_html
 
-def main():
+basepath = sys.argv[0]
+
+def main(base = "/"):
     # parser = argparse.ArgumentParser(description="Source Directory to Copy")
     # parser.add_argument("dir", help="The name of the directory to copy in the current directory")
     # args = parser.parse_args()
+    static = f"{base}static"
 
 
     if os.path.exists("public"):
@@ -74,6 +78,8 @@ def generate_page(from_path: str, template_path: str, dest_path: str):
     html_title = extract_title(content_md)
     full_html = content_template.replace("{{ Title }}", html_title)
     full_html = full_html.replace("{{ Content }}", html_content.to_html())
+    full_html = full_html.replace('href="', f'href="{basepath}')
+    full_html = full_html.replace('src="', f'src="{basepath}')
 
     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
 
@@ -99,4 +105,4 @@ def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir
 
 
 if __name__ == "__main__":
-    main()
+    main(basepath)
